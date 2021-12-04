@@ -30,31 +30,26 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final OrderItemRepository orderItemRepository;
-
     private final ItemImgRepository itemImgRepository;
 
     public Long order(OrderDto orderDto, String email){
-
         Item item = itemRepository.findById(orderDto.getItemId())
-                .orElseThrow(EntityNotFoundException::new); // 주문할 상품을 조회
+                .orElseThrow(EntityNotFoundException::new);
 
         Member member = memberRepository.findByEmail(email);
-        // 현재 로그인한 회원의 이메일 정보를 이용해서 회원 정보 조회
-
-        member.setPoint(member.getPoint() - orderDto.getInput_point() + (int) (orderDto.getAmount_price() * 0.01));
-        // 포인트 갱신 로직
 
         List<OrderItem> orderItemList = new ArrayList<>();
-        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount(), orderDto.getInput_point(), orderDto.getAmount_price());
-        // 주문할 상품 엔티티와 주문 수량을 이용하여 주문 상품 엔티티 생성
+        OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
 
         orderItemList.add(orderItem);
-        Order order = Order.createOrder(member, orderItemList);
-        // 회원 정보와 주문할 상품 리스트 정보를 이용하여 주문 엔티티 생성
 
-        memberRepository.save(member);
-        // 포인트 갱신
+        if(member.getPoint() < orderDto.getUsedPoint()) {
+            throw new IllegalStateException("포인트가 부족합니다.");
+        } // 사용 포인트 보다 가지고 있는 포인트가 적을 시 경고문 출력
+
+        Order order = Order.createOrder(member, orderDto.getUsedPoint(), orderItemList);
+
+        this.processPointUsage(member, order); // 계산된 포인트 함수 호출
 
         orderRepository.save(order);
         // 생성한 주문 엔티티 저장
@@ -66,9 +61,9 @@ public class OrderService {
     public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
 
         List<Order> orders = orderRepository.findOrders(email, pageable);
-        // 유저의 아이디와 페이징 조건을 이용하여 주문 목록을 조회
+
         Long totalCount = orderRepository.countOrder(email);
-        // 유저의 주문 총 개수를 구한다.
+
 
         List<OrderHistDto> orderHistDtos = new ArrayList<>();
 
@@ -110,8 +105,7 @@ public class OrderService {
         order.cancelOrder();
     }
 
-    public Long orders(List<OrderDto> orderDtoList, String email){
-
+    public Long orders(String email, Integer usedPoint, List<OrderDto> orderDtoList) {
         Member member = memberRepository.findByEmail(email);
         List<OrderItem> orderItemList = new ArrayList<>();
 
@@ -119,14 +113,27 @@ public class OrderService {
             Item item = itemRepository.findById(orderDto.getItemId())
                     .orElseThrow(EntityNotFoundException::new);
 
-            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount(), orderDto.getInput_point(), orderDto.getAmount_price());
+            OrderItem orderItem = OrderItem.createOrderItem(item, orderDto.getCount());
             orderItemList.add(orderItem);
         }
 
-        Order order = Order.createOrder(member, orderItemList);
+        if(member.getPoint() < usedPoint) {
+            throw new IllegalStateException("포인트가 부족합니다.");
+        } // 부족 경고문
+
+        Order order = Order.createOrder(member, usedPoint, orderItemList);
+
+        this.processPointUsage(member, order); // 포인트 계산 함수 호출
+
         orderRepository.save(order);
 
         return order.getId();
     }
+
+    public void processPointUsage(Member member, Order order) {
+        member.setPoint(member.getPoint() - order.getUsedPoint() + order.getAccPoint());
+
+        memberRepository.save(member);
+    } // 포인트 계산 함수
 
 }

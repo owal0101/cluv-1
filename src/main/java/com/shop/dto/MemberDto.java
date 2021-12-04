@@ -6,5 +6,5 @@ import lombok.Setter;
 @Setter
 public class MemberDto {
 
-    private int point;
+    private int point; // point
 }

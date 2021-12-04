@@ -1,9 +1,12 @@
 package com.shop.service;
 
+import com.shop.dto.MemberSearchDto;
 import com.shop.entity.Member;
 import com.shop.entity.OrderItem;
 import com.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,10 +40,6 @@ public class MemberService implements UserDetailsService {
         return member.getPoint();
     }
 
-    public String findMemAndPointByEmail(String email){
-        Member member = memberRepository.findByEmail(email);
-        return member.getEmail();
-    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -56,6 +55,11 @@ public class MemberService implements UserDetailsService {
                 .password(member.getPassword())
                 .roles(member.getRole().toString())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable){
+        return memberRepository.getAdminMemberPage(memberSearchDto, pageable);
     }
 
 }

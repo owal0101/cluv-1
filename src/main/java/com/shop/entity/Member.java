@@ -33,13 +33,9 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private Calendar end_time;
-
-    private int point;
+    private int point; // 포인트 컬럼 추가
 
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder){
-        Calendar cCal = Calendar.getInstance();
-        cCal.add(Calendar.DATE, 5);
         Member member = new Member();
         member.setName(memberFormDto.getName());
         member.setEmail(memberFormDto.getEmail());
@@ -47,8 +43,7 @@ public class Member extends BaseEntity {
         String password = passwordEncoder.encode(memberFormDto.getPassword());
         member.setPassword(password);
         member.setRole(Role.USER);
-        member.setPoint(1000);
-        member.setEnd_time(cCal);
+        member.setPoint(1000); // 신규 가입시 포인트 추가
         return member;
     }
 

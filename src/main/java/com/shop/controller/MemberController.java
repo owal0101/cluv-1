@@ -1,8 +1,6 @@
 package com.shop.controller;
 
-import com.shop.dto.MemberDto;
-import com.shop.dto.MemberFormDto;
-import com.shop.dto.OrderDto;
+import com.shop.dto.*;
 import com.shop.entity.Item;
 import com.shop.service.MemberService;
 import com.shop.entity.Member;
@@ -70,15 +68,15 @@ public class MemberController {
         return "/member/memberLoginForm";
     }
 
-    @GetMapping(value = "/admin/member")
-    public String findmemandpoint(Model model, Principal principal){
+    @GetMapping(value = {"/admin/memberMng", "/admin/memberMng/{page}"})
+    public String memberMange(MemberSearchDto memberSearchDto, @PathVariable("page") Optional<Integer> page, Model model){
+        Pageable pageable = PageRequest.of(page.isPresent()? page.get() : 0, 10);
 
-        String email = principal.getName();
-
-        model.addAttribute("mem_point",memberService.findpointByEmail(email));
-        model.addAttribute("mem",memberService.findMemAndPointByEmail(email));
-
-        return "/member/allmember";
+        Page<Member> members = memberService.getAdminMemberPage(memberSearchDto, pageable);
+        model.addAttribute("members", members);
+        model.addAttribute("memberSearchDto", memberSearchDto);
+        model.addAttribute("maxPage", 5);
+        return "member/memberMng";
     }
 
 }

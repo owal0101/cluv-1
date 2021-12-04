@@ -33,7 +33,7 @@ public class CartController {
     private final MemberService memberService;
 
     @PostMapping(value = "/cart")
-    public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto, BindingResult bindingResult, Principal principal, Model model){
+    public @ResponseBody ResponseEntity order(@RequestBody @Valid CartItemDto cartItemDto, BindingResult bindingResult, Principal principal){
 
         if(bindingResult.hasErrors()){
             StringBuilder sb = new StringBuilder();
@@ -52,7 +52,6 @@ public class CartController {
 
         try {
             cartItemId = cartService.addCart(cartItemDto, email);
-//            model.addAttribute("input_point", memberService.findpointByEmail(email));
         } catch(Exception e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +66,7 @@ public class CartController {
 
         List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
         model.addAttribute("cartItems", cartDetailList);
-        model.addAttribute("input_point", memberService.findpointByEmail(email));
+        model.addAttribute("inputPoint", memberService.findpointByEmail(email)); // inputPoint 장바구니 화면
         model.addAttribute("point", memberService.findpointByEmail(email));
         return "cart/cartList";
     }
@@ -99,7 +98,6 @@ public class CartController {
 
     @PostMapping(value = "/cart/orders")
     public @ResponseBody ResponseEntity orderCartItem(@RequestBody CartOrderDto cartOrderDto, Principal principal){
-
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
 
         if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){
@@ -112,8 +110,8 @@ public class CartController {
             }
         }
 
-        Long orderId = cartService.orderCartItem(cartOrderDtoList, principal.getName());
+        Long orderId = cartService.orderCartItem(principal.getName(), cartOrderDto.getUsedPoint(), cartOrderDtoList); // cartOrderDto.getUsedPoint() 추가
+
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
-
 }

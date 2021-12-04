@@ -17,7 +17,7 @@ public class OrderDto {
     @Max(value = 999, message = "최대 주문 수량은 999개 입니다.")
     private int count;
 
-    private int input_point;
+    @Min(value = 0, message = "포인트는 0 이상의 숫자를 입력해주세요.")
+    private int usedPoint; // 사용 포인트 값
 
-    private int amount_price;
 }

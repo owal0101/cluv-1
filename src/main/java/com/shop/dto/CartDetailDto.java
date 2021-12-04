@@ -16,6 +16,7 @@ public class CartDetailDto {
 
     private String imgUrl; //상품 이미지 경로
 
+
     public CartDetailDto(Long cartItemId, String itemNm, int price, int count, String imgUrl){
         this.cartItemId = cartItemId;
         this.itemNm = itemNm;

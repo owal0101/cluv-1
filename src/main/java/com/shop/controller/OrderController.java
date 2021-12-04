@@ -66,7 +66,7 @@ public class OrderController {
         model.addAttribute("orders", ordersHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage", 5);
-        model.addAttribute("point", memberService.findpointByEmail(email));
+        model.addAttribute("point", memberService.findpointByEmail(email)); // 주문 페이지 상단 포인트 조회
 
         return "order/orderHist";
     }

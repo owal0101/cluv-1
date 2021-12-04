@@ -120,8 +120,8 @@ public class ItemController {
         String email = principal.getName();
         ItemFormDto itemFormDto = itemService.getItemDtl(itemId);
         model.addAttribute("item", itemFormDto);
-        model.addAttribute("input_point", memberService.findpointByEmail(email));
-        model.addAttribute("point", memberService.findpointByEmail(email));
+        model.addAttribute("inputPoint", memberService.findpointByEmail(email)); // 상품 화면 표시
+        model.addAttribute("point", memberService.findpointByEmail(email)); // 아이템 화면 헤더 부분에 포인트 조회
         return "item/itemDtl";
     }
 

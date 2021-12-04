@@ -27,12 +27,13 @@
         function calculateToalPrice(){
             var count = $("#count").val();
             var price = $("#price").val();
+            var inputPoint = $("#input_point").val();
             var totalPrice = price*count;
 
             $("#totalPrice").html(totalPrice + '원');
-            var amount_Price = totalPrice - [[${input_point}]];
+            var amountPrice = totalPrice - inputPoint;
 
-            $("#amountPrice").html(amount_Price + '원');
+            $("#amountPrice").html(amountPrice + '원');
         }
 
         function order(){
@@ -43,8 +44,8 @@
             var paramData = {
                 itemId : $("#itemId").val(),
                 count : $("#count").val(),
-                input_point : [[${input_point}]],
-                amount_price : parseInt($("#amountPrice").text().slice(0,-1))
+                usedPoint : $("#input_point").val()
+                    // [[${inputPoint}]]
             };
 
             var param = JSON.stringify(paramData);
@@ -145,6 +146,10 @@
             height:auto;
             width:50%;
         }
+        .wd50{
+            height:auto;
+            width:50%;
+        }
     </style>
 </th:block>
 
@@ -184,7 +189,8 @@
                 <h5>현재 금액</h5>
                 <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
                 <h5>사용 포인트</h5>
-                    <h3 name="input_point"id="input_point" class="font-weight-bold" th:text="${input_point} + '점'"></h3>
+                    <input type="number" name="input_point" id="input_point" class="font-weight-bold"  value="0" min="0">
+                    <span class="font-weight-bold">점</span>
                 <h5>결제 금액</h5>
                 <h3 name="amountPrice" id="amountPrice" class="font-weight-bold"></h3>
             </div>

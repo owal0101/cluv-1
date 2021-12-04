@@ -19,23 +19,23 @@ public class Item extends BaseEntity {
     @Id
     @Column(name="item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;       //상품 코드
+    private Long id;
 
     @Column(nullable = false, length = 50)
-    private String itemNm; //상품명
+    private String itemNm;
 
     @Column(name="price", nullable = false)
-    private int price; //가격
+    private int price;
 
     @Column(nullable = false)
-    private int stockNumber; //재고수량
+    private int stockNumber;
 
     @Lob
     @Column(nullable = false)
-    private String itemDetail; //상품 상세 설명
+    private String itemDetail;
 
     @Enumerated(EnumType.STRING)
-    private ItemSellStatus itemSellStatus; //상품 판매 상태
+    private ItemSellStatus itemSellStatus;
 
     public void updateItem(ItemFormDto itemFormDto){
         this.itemNm = itemFormDto.getItemNm();

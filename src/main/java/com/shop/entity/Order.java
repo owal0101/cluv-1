@@ -22,33 +22,38 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private LocalDateTime orderDate; //주문일
+    private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus; //주문상태
+    private OrderStatus orderStatus;
+
+    private int usedPoint; // 적용 포인트
+
+    private int accPoint; // 사용된 포인트 기록
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL
             , orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    private int input_point;
 
     public void addOrderItem(OrderItem orderItem) {
         orderItems.add(orderItem);
         orderItem.setOrder(this);
     }
 
-    public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+    public static Order createOrder(Member member, Integer usedPoint, List<OrderItem> orderItemList) {
         Order order = new Order();
         order.setMember(member);
+
+        order.setUsedPoint(usedPoint); // 사용 포인트 저장
 
         for(OrderItem orderItem : orderItemList) {
             order.addOrderItem(orderItem);
         }
 
+        order.setAccPoint((int)((order.getTotalPrice() - order.getUsedPoint()) * 0.01)); // 적립 포인트 저장
+
         order.setOrderStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
-//        order.setInput_point(input_point);
         return order;
     }
 

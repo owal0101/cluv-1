@@ -21,17 +21,21 @@
 
         function getOrderTotalPrice(){
             var orderTotalPrice = 0;
+            var amountPrice = 0;
             $("input[name=cartChkBox]:checked").each(function() {
                 var cartItemId = $(this).val();
                 var price = $("#price_" + cartItemId).attr("data-price");
                 var count = $("#count_" + cartItemId).val();
+                var inputPoint = $("#input_point").val();
+                // var inputPoint = $("#input_point_" + cartItemId).val();
                 orderTotalPrice += price*count;
+
+                amountPrice = orderTotalPrice - inputPoint;
 
             });
 
             $("#orderTotalPrice").html(orderTotalPrice+'원');
-            var amount_Price = orderTotalPrice - [[${input_point}]];
-            $("#amountPrice").html(amount_Price + '원');
+            $("#amountPrice").html(amountPrice + '원');
         }
 
         function changeCount(obj){
@@ -124,10 +128,6 @@
 
             var dataList = new Array();
             var paramData = new Object();
-            var paramData1 = {
-                input_point : [[${input_point}]],
-                amount_price : parseInt($("#amountPrice").text().slice(0,-1))
-            }
 
             $("input[name=cartChkBox]:checked").each(function() {
                 var cartItemId = $(this).val();
@@ -137,15 +137,18 @@
             });
 
             paramData['cartOrderDtoList'] = dataList;
+            paramData['usedPoint'] = $("#input_point").val();
 
             var param = JSON.stringify(paramData);
-            var param1 = JSON.stringify(paramData1);
+
+
+            console.log(param);
 
             $.ajax({
                 url      : url,
                 type     : "POST",
                 contentType : "application/json",
-                data     : param,param1,
+                data     : param,
                 beforeSend : function(xhr){
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
@@ -262,8 +265,10 @@
         <h2 class="text-center">
             주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
         </h2>
-        <h2 class="text-center">
-            사용 포인트 : <span id="input_point" class="text-danger" th:text="${input_point} + '점'"></span>
+
+        <h2>사용 포인트 :
+        <input type="number" name="input_point" id="input_point" class="text-danger" value="0" min="0">
+        <span class="text-danger">점</span>
         </h2>
         <h2 class="text-center">
             결제 금액 : <span name="amountPrice" id="amountPrice" class="text-danger">0원</span>
