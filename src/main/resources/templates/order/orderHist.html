@@ -115,10 +115,13 @@
 
                         <span th:text="${orderItem.orderPrice} +'원'"></span>
                         <span th:text="${orderItem.count} +'개'"></span>
+<!--                        사용포인트 값 가져오기-->
                         <br>
                         <span th:text="'사용 포인트 : ' + ${order.usedPoint} + '포인트'"></span>
+<!--                        적립 포인트 값 가져오기-->
                         <br>
                         <span th:text="'적립 포인트 : ' + ${order.accPoint} + '포인트'"></span>
+<!--                        최종 결제 금액 출력하기 -->
                         <br>
                         <span th:text="'최종 결제금액 : ' + ${order.totalPrice - order.usedPoint} + '원'"></span>
                     </div>

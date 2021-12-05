@@ -20,7 +20,7 @@ public class OrderItem extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private int orderPrice;
+    private int orderPrice; // 주문 금액
 
     private int count;
 
@@ -28,7 +28,7 @@ public class OrderItem extends BaseEntity {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setCount(count);
-        orderItem.setOrderPrice(item.getPrice());
+        orderItem.setOrderPrice(item.getPrice()); // 주문 금액 get
         item.removeStock(count);
         return orderItem;
     }

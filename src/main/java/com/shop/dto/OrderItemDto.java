@@ -10,7 +10,7 @@ public class OrderItemDto {
     public OrderItemDto(OrderItem orderItem, String imgUrl){
         this.itemNm = orderItem.getItem().getItemNm();
         this.count = orderItem.getCount();
-        this.orderPrice = orderItem.getOrderPrice();
+        this.orderPrice = orderItem.getOrderPrice(); // 주문 금액 get
         this.imgUrl = imgUrl;
     }
 
@@ -18,7 +18,7 @@ public class OrderItemDto {
     private int count;
 
 
-    private int orderPrice;
+    private int orderPrice; // 주문 금액 dto
 
 
     private String imgUrl;

@@ -20,6 +20,7 @@
                     <a class="nav-link" href="/admin/items">상품 관리</a>
                 </li>
 
+<!--                관리자 회원 관리-->
                 <li class="nav-item" sec:authorize="hasAnyAuthority('ROLE_ADMIN')">
                     <a class="nav-link" href="/members/admin/memberMng">회원 관리</a>
                 </li>
@@ -41,6 +42,7 @@
 
             </ul>
 
+<!--            사용자 포인트 조회-->
             <b style="color:white;", sec:authorize="hasAnyAuthority('ROLE_USER')">POINT :</b>
             <b style="color:white;", class="nav-link" sec:authorize="hasAnyAuthority('ROLE_USER')" th:text="${point} + '점'">
             </b>

@@ -99,7 +99,7 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
-    public Long orderCartItem(String email, Integer usedPoint, List<CartOrderDto> cartOrderDtoList){
+    public Long orderCartItem(String email, Integer usedPoint, List<CartOrderDto> cartOrderDtoList){ // 장바구니 구매 시 포인트 사용
         List<OrderDto> orderDtoList = new ArrayList<>();
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
@@ -114,7 +114,7 @@ public class CartService {
             orderDtoList.add(orderDto);
         }
 
-        Long orderId = orderService.orders(email, usedPoint, orderDtoList);
+        Long orderId = orderService.orders(email, usedPoint, orderDtoList); // 사용포인트
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
             CartItem cartItem = cartItemRepository

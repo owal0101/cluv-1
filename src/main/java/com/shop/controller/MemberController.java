@@ -76,7 +76,7 @@ public class MemberController {
         model.addAttribute("members", members);
         model.addAttribute("memberSearchDto", memberSearchDto);
         model.addAttribute("maxPage", 5);
-        return "member/memberMng";
+        return "member/memberMng"; // member 정보 및 포인트 조회 페이지 controller
     }
 
 }

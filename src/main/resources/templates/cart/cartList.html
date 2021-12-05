@@ -26,16 +26,15 @@
                 var cartItemId = $(this).val();
                 var price = $("#price_" + cartItemId).attr("data-price");
                 var count = $("#count_" + cartItemId).val();
-                var inputPoint = $("#input_point").val();
-                // var inputPoint = $("#input_point_" + cartItemId).val();
+                var inputPoint = $("#input_point").val(); // 사용 포인트 불러오기
                 orderTotalPrice += price*count;
 
-                amountPrice = orderTotalPrice - inputPoint;
+                amountPrice = orderTotalPrice - inputPoint; // 최종 결제 금액 계산
 
             });
 
             $("#orderTotalPrice").html(orderTotalPrice+'원');
-            $("#amountPrice").html(amountPrice + '원');
+            $("#amountPrice").html(amountPrice + '원'); // 원 단위 붙여서 호출
         }
 
         function changeCount(obj){
@@ -137,12 +136,10 @@
             });
 
             paramData['cartOrderDtoList'] = dataList;
-            paramData['usedPoint'] = $("#input_point").val();
+            paramData['usedPoint'] = $("#input_point").val(); // 주문시 사용 포인트 가져오기
 
             var param = JSON.stringify(paramData);
 
-
-            console.log(param);
 
             $.ajax({
                 url      : url,
@@ -266,10 +263,13 @@
             주문 금액 : <span id="orderTotalPrice" class="text-danger">0원</span>
         </h2>
 
+
+<!--        사용포인트 html-->
         <h2>사용 포인트 :
         <input type="number" name="input_point" id="input_point" class="text-danger" value="0" min="0">
         <span class="text-danger">점</span>
         </h2>
+<!--        결제 금액 html-->
         <h2 class="text-center">
             결제 금액 : <span name="amountPrice" id="amountPrice" class="text-danger">0원</span>
         </h2>

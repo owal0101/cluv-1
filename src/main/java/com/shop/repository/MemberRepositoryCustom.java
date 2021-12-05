@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface MemberRepositoryCustom {
 
-    Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable);
+    Page<Member> getAdminMemberPage(MemberSearchDto memberSearchDto, Pageable pageable); // 멤버 포인트 조회  repository
 }

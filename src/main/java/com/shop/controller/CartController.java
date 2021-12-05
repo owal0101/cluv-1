@@ -67,7 +67,7 @@ public class CartController {
         List<CartDetailDto> cartDetailList = cartService.getCartList(principal.getName());
         model.addAttribute("cartItems", cartDetailList);
         model.addAttribute("inputPoint", memberService.findpointByEmail(email)); // inputPoint 장바구니 화면
-        model.addAttribute("point", memberService.findpointByEmail(email));
+        model.addAttribute("point", memberService.findpointByEmail(email)); // header에 member 포인트 조회
         return "cart/cartList";
     }
 

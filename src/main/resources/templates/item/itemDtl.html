@@ -27,12 +27,14 @@
         function calculateToalPrice(){
             var count = $("#count").val();
             var price = $("#price").val();
-            var inputPoint = $("#input_point").val();
+            var inputPoint = $("#input_point").val(); // 사용 포인트 불러오기
             var totalPrice = price*count;
 
+            //총 결제 금액 계산
             $("#totalPrice").html(totalPrice + '원');
             var amountPrice = totalPrice - inputPoint;
 
+            // 원 단위 붙여서 표시
             $("#amountPrice").html(amountPrice + '원');
         }
 
@@ -44,8 +46,7 @@
             var paramData = {
                 itemId : $("#itemId").val(),
                 count : $("#count").val(),
-                usedPoint : $("#input_point").val()
-                    // [[${inputPoint}]]
+                usedPoint : $("#input_point").val() // 사용된 포인트 가져오기
             };
 
             var param = JSON.stringify(paramData);
@@ -188,9 +189,11 @@
             <div class="text-right mgt-50">
                 <h5>현재 금액</h5>
                 <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
+<!--                포인트 html-->
                 <h5>사용 포인트</h5>
                     <input type="number" name="input_point" id="input_point" class="font-weight-bold"  value="0" min="0">
                     <span class="font-weight-bold">점</span>
+<!--                최종 결제 금액-->
                 <h5>결제 금액</h5>
                 <h3 name="amountPrice" id="amountPrice" class="font-weight-bold"></h3>
             </div>

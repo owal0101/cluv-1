@@ -32,7 +32,7 @@ public class MainController {
         if(principal != null) {
             String email = principal.getName();
 
-            model.addAttribute("point", memberService.findpointByEmail(email));
+            model.addAttribute("point", memberService.findpointByEmail(email)); // 로그인 member 헤더 포인트 조회
         }
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 6);

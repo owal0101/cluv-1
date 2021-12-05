@@ -38,7 +38,7 @@ public class MemberService implements UserDetailsService {
     public int findpointByEmail(String email){
         Member member = memberRepository.findByEmail(email);
         return member.getPoint();
-    }
+    } // 회원 포인트 조회
 
 
     @Override
